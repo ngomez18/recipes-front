@@ -3,15 +3,10 @@
     <div class="hero-head">
       <nav class="navbar">
         <div class="container">
-          <div class="navbar-brand">
-            <a class="navbar-item">
-              <img src="https://bulma.io/images/bulma-type-white.png" alt="Logo">
-            </a>
-          </div>
           <div id="navbarMenuHeroB" class="navbar-menu">
             <div class="navbar-end">
               <span class="navbar-item">
-                <a class="button is-info is-inverted" href="http://github.com/ngomez22/recipes-front">
+                <a class="button is-info is-inverted" href="http://github.com/ngomez22/recipes-front" target="_blank">
                   <span class="icon">
                     <i class="fab fa-github"></i>
                   </span>
