@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <Header />
-    <Recipes />
-    <RecipeForm />
+    <Header v-bind:activeTab="activeTab"
+            v-on:activateRecipes="activeTab=1"
+            v-on:activateCreateRecipe="activeTab=2"/>
+    <Recipes v-show="activeTab==1"/>
+    <RecipeForm v-show="activeTab==2"/>
   </div>
 </template>
 
@@ -18,5 +20,11 @@ export default {
     Recipes,
     RecipeForm,
   },
+
+  data() {
+    return {
+      activeTab: 1
+    }
+  }
 };
 </script>
