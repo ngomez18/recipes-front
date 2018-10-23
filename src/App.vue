@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <Header v-bind:activeTab="activeTab"
-            v-on:activateRecipes="activeTab=1"
-            v-on:activateCreateRecipe="activeTab=2"/>
-    <Recipes v-show="activeTab==1"/>
-    <RecipeForm v-show="activeTab==2"/>
+            v-on:activateRecipes="viewRecipes"
+            v-on:activateCreateRecipe="createRecipe"/>
+    <Recipes v-show="showList"/>
+    <RecipeForm v-show="!showList"/>
   </div>
 </template>
 
@@ -23,8 +23,24 @@ export default {
 
   data() {
     return {
-      activeTab: 1
-    }
-  }
+      activeTab: 1,
+      showList: true,
+    };
+  },
+
+  methods: {
+    viewRecipes() {
+      this.showList = true;
+      this.activeTab = 1;
+    },
+    editRecipe() {
+      this.showList = false;
+      this.activeTab = 1;
+    },
+    createRecipe() {
+      this.showList = false;
+      this.activeTab = 2;
+    },
+  },
 };
 </script>
