@@ -56,6 +56,7 @@
         <IngredientForm v-for="(ingredient, index) in ingredients"
                         v-bind:key="index"
                         v-bind:ingredient="ingredient"
+                        v-bind:types="ingredientTypes"
                         v-on:delete="deleteIngredient(index)"/>
         <div class="container has-text-centered">
           <a class="button is-primary"
@@ -111,6 +112,18 @@ export default {
           name: '',
           type: '',
         },
+      ],
+      ingredientTypes: [
+        'Vegetable',
+        'Spice/Herb',
+        'Cereal',
+        'Meat',
+        'Dairy',
+        'Fruit',
+        'Seafood',
+        'Sugar',
+        'Nut',
+        'Other',
       ],
     };
   },

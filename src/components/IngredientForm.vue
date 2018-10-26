@@ -6,10 +6,9 @@
     <p class="control">
       <span class="select">
         <select v-model="ingredient.type">
-          <option>Dairy</option>
-          <option>Vegetable</option>
-          <option>Meat</option>
-          <option>Seasoning</option>
+          <option v-for="type in types"
+                  v-bind:key="type">{{ type }}
+          </option>
         </select>
       </span>
     </p>
@@ -25,7 +24,7 @@
 <script>
 export default {
   name: 'ingredientForm',
-  props: ['ingredient'],
+  props: ['ingredient', 'types'],
 };
 </script>
 
