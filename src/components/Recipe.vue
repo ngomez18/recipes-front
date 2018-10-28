@@ -1,26 +1,24 @@
 <template>
-  <article class="tile is-child column is-4 box">
-    <p class="title">Recipe name</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum placerat ligula ipsum,
-      scelerisque tincidunt nunc posuere a.Integer nec lorem pharetra, ultrices augue ut,
-      tincidunt.</p>
+  <article class="column is-half box">
+    <p class="title">{{ recipe.name }}</p>
+    <p>{{ recipe.description }}</p>
     <figure class="image is-3by2">
       <!-- Placeholder image -->
-      <img src="https://images.unsplash.com/photo-1503764654157-72d979d9af2f">
+      <img v-bind:src="recipe.image">
     </figure>
     <div class="box level">
       <span class="icon">
         <i class="fas fa-clock"></i>
       </span>
-      <p>45 min</p>
+      <p>{{ recipe.requiredTime }} min</p>
       <span class="icon">
         <i class="fas fa-users"></i>
       </span>
-      <p>Serves 4</p>
+      <p>Serves {{ recipe.servings }}</p>
       <span class="icon">
         <i class="fas fa-tachometer-alt"></i>
       </span>
-      <p> {{ getDifficultyText(1) }} </p>
+      <p> {{ getDifficultyText(recipe.difficulty) }} </p>
     </div>
     <table class="table is-fullwidth">
       <thead>
@@ -29,12 +27,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Hola</td>
+        <tr v-for="ingredient in recipe.ingredients"
+            v-bind:key="ingredient.name">
+          <td>{{ ingredient.name + " (" + ingredient.type + ")"}}</td>
         </tr>
       </tbody>
     </table>
-    <table class="table">
+    <table class="table is-fullwidth">
       <thead>
         <tr>
           <th>Instructions</th>
@@ -42,7 +41,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>fjkasdfjasdlfkjasdlfkjasdlfkjañsldfjañsldfkjañsldfkjañsldfkj</td>
+          <td>{{ recipe.steps }}</td>
         </tr>
       </tbody>
     </table>
@@ -53,7 +52,8 @@
           Edit
         </a>
       </p>
-      <p class="control">
+      <p class="control"
+        v-on:click="$emit('delete')">
         <a class="button is-danger">
           <span class="fa fa-trash"></span>
           Delete
@@ -82,7 +82,6 @@ export default {
   },
 };
 </script>
-
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
