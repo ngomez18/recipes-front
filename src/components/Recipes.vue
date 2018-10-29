@@ -8,13 +8,13 @@
       <Recipe v-for="recipe in recipes"
               v-bind:recipe="recipe"
               v-bind:key="recipe.ID"
-              v-on:delete="deleteRecipe(recipe.ID)" />
+              v-on:delete="deleteRecipe(recipe.ID)"
+              v-on:edit="editRecipe(recipe)" />
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 import swal from 'sweetalert';
 import Recipe from './Recipe.vue';
 
@@ -23,47 +23,21 @@ export default {
   components: {
     Recipe,
   },
-
-  data() {
-    return {
-      recipes: [],
-    };
-  },
-
-  mounted() {
-    this.fetchRecipes();
-  },
+  props: ['recipes'],
 
   methods: {
-    fetchRecipes() {
-      axios.get('https://recipes-api-go.herokuapp.com/api/recipes')
-        .then(response => (this.recipes = response.data))
-        .catch(error => console.log(error));
-    },
     deleteRecipe(id) {
-      const vm = this; // View Model
       swal('Are you sure you want to delete this recipe?', {
         dangerMode: true,
         buttons: true,
       }).then((isConfirm) => {
         if (isConfirm) {
-          axios.delete(`https://recipes-api-go.herokuapp.com/api/recipe/${id}`)
-            .then((response) => {
-              console.log(response);
-              if (response.status === 200) {
-                swal({ icon: 'success' });
-                vm.recipes = vm.recipes.filter(r => r.ID !== id);
-              }
-            })
-            .catch((error) => {
-              swal({
-                text: 'Something went wrong!',
-                icon: 'error',
-              });
-              console.log(error);
-            });
+          this.$emit('deleteRecipe', id);
         }
       });
+    },
+    editRecipe(recipe) {
+      this.$emit('editRecipe', recipe);
     },
   },
 };

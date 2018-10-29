@@ -4,22 +4,24 @@
       <div class="field">
         <label class="label">Name</label>
         <div class="control">
-          <input class="input" type="text" placeholder="Scrambled eggs">
+          <input v-model="recipe.name" class="input" type="text"
+                placeholder="Ham and cheese sandwich">
         </div>
       </div>
 
       <div class="field">
         <label class="label">Image</label>
         <div class="control">
-          <input class="input" type="text" placeholder="https://i.imgur.com/HFEFssS.jpg">
+          <input v-model="recipe.image" class="input" type="text"
+                placeholder="https://i.imgur.com/HFEFssS.jpg">
         </div>
       </div>
 
       <div class="field">
         <label class="label">Description</label>
         <div class="control">
-          <textarea class="textarea"
-          placeholder="Delicious creamy scrambled eggs with bacon perfect for breakfast">
+          <textarea v-model="recipe.description" class="textarea"
+          placeholder="Yummy sandwich perfect for any occasion">
           </textarea>
         </div>
       </div>
@@ -28,20 +30,20 @@
         <div class="field column">
           <label class="label">Required Time (in minutes)</label>
           <div class="control">
-            <input class="input" type="number" placeholder="45">
+            <input v-model="recipe.requiredTime" class="input" type="number" placeholder="15">
           </div>
         </div>
         <div class="field column">
           <label class="label">Servings</label>
           <div class="control">
-            <input class="input" type="number" placeholder="2">
+            <input v-model="recipe.servings" class="input" type="number" placeholder="1">
           </div>
         </div>
         <div class="field column">
           <label class="label">Difficulty</label>
           <div class="control">
             <div class="select">
-              <select>
+              <select v-model="recipe.difficulty">
                 <option v-for="i in 5"
                         v-bind:key="i">{{ i }}</option>
               </select>
@@ -73,21 +75,19 @@
     <div class="field">
       <label class="label">Instructions</label>
       <div class="control">
-        <textarea class="textarea"
-        placeholder="Break 2 eggs into a bowl.
-        Scramble.
-        Sprinkle salt and pepper to taste.Pour on stove.
-        Wait">
+        <textarea v-model="recipe.steps" class="textarea"
+        placeholder="Place a slice of ham and a slice of cheese on top of a loaf of bread.
+        Place another loaf of bread on top of the ham and cheese and enjoy!">
         </textarea>
       </div>
     </div>
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-primary">Save</button>
+        <button v-on:click="saveRecipe" class="button is-primary">Save</button>
       </div>
       <div class="control">
-        <button class="button">Cancel</button>
+        <button v-on:click="$emit('cancel')" class="button">Cancel</button>
       </div>
     </div>
   </div>
@@ -128,6 +128,12 @@ export default {
     };
   },
 
+  mounted() {
+    if (this.recipe.ingredients && this.recipe.ingredients.length > 0) {
+      this.ingredients = this.recipe.ingredients;
+    }
+  },
+
   methods: {
     addIngredient() {
       this.ingredients.push({
@@ -139,10 +145,29 @@ export default {
       if (this.ingredients.length <= 1) {
         swal('Surely your recipe requires at least one ingredient!');
       } else {
-        console.log(this.ingredients);
         this.ingredients.splice(index, 1);
-        console.log(this.ingredient);
       }
+    },
+    saveRecipe() {
+      if (!this.recipe.name || !this.recipe.image || !this.recipe.description
+        || !this.recipe.requiredTime || !this.recipe.servings || !this.recipe.difficulty
+        || !this.checkIngredients() || !this.recipe.steps) {
+        swal('All fields are mandatory! Please make sure to fill them all out');
+      } else if (!this.isImageURL(this.recipe.image)) {
+        swal('Please provide a valid image link for your recipe');
+      } else {
+        this.recipe.ingredients = this.ingredients;
+        this.recipe.requiredTime = parseInt(this.recipe.requiredTime, 10);
+        this.recipe.servings = parseInt(this.recipe.servings, 10);
+        this.recipe.difficulty = parseInt(this.recipe.difficulty, 10);
+        this.$emit('save', this.recipe);
+      }
+    },
+    isImageURL(url) {
+      return (url.match(/\.(jpeg|jpg|gif|png)$/) !== null);
+    },
+    checkIngredients() {
+      return this.ingredients.every(ingredient => (ingredient.name && ingredient.type));
     },
   },
 };

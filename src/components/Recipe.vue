@@ -3,7 +3,6 @@
     <p class="title">{{ recipe.name }}</p>
     <p>{{ recipe.description }}</p>
     <figure class="image is-3by2">
-      <!-- Placeholder image -->
       <img v-bind:src="recipe.image">
     </figure>
     <div class="box level">
@@ -46,7 +45,8 @@
       </tbody>
     </table>
     <div class="field is-grouped">
-      <p class="control has-centered-text">
+      <p class="control has-centered-text"
+        v-on:click="$emit('edit')">
         <a class="button is-link">
           <span class="fa fa-edit"></span>
           Edit
