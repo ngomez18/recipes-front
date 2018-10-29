@@ -1,5 +1,5 @@
 <template>
-  <article class="column is-half box">
+  <article class="column is-two-fifths box">
     <p class="title">{{ recipe.name }}</p>
     <p>{{ recipe.description }}</p>
     <figure class="image is-3by2">
@@ -87,5 +87,8 @@ export default {
 <style scoped lang="scss">
 figure {
   margin: 4%;
+}
+article {
+  margin: 2.5%;
 }
 </style>

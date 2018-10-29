@@ -128,10 +128,10 @@ export default {
     };
   },
 
-  mounted() {
-    if (this.recipe.ingredients && this.recipe.ingredients.length > 0) {
-      this.ingredients = this.recipe.ingredients;
-    }
+  watch: {
+    recipe(newVal) {
+      this.ingredients = newVal.ingredients;
+    },
   },
 
   methods: {

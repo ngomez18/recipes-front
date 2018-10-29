@@ -22,6 +22,22 @@ import Header from './components/Header.vue';
 import Recipes from './components/Recipes.vue';
 import RecipeForm from './components/RecipeForm.vue';
 
+const emptyRecipe = {
+  name: '',
+  description: '',
+  image: '',
+  requiredTime: '',
+  difficulty: '',
+  servings: '',
+  steps: '',
+  ingredients: [
+    {
+      name: '',
+      type: '',
+    },
+  ],
+};
+
 export default {
   name: 'app',
   components: {
@@ -34,16 +50,7 @@ export default {
     return {
       activeTab: 1,
       showList: true,
-      activeRecipe: {
-        name: '',
-        description: '',
-        image: '',
-        requiredTime: '',
-        difficulty: '',
-        servings: '',
-        steps: '',
-        ingredients: [],
-      },
+      activeRecipe: emptyRecipe,
       recipes: [],
       editMode: false,
     };
@@ -58,25 +65,17 @@ export default {
       this.showList = true;
       this.activeTab = 1;
     },
+    createRecipe() {
+      this.showList = false;
+      this.editMode = false;
+      this.activeTab = 2;
+      this.activeRecipe = emptyRecipe;
+    },
     editRecipe(recipe) {
       this.showList = false;
       this.editMode = true;
       this.activeTab = 1;
       this.activeRecipe = recipe;
-    },
-    createRecipe() {
-      this.showList = false;
-      this.activeTab = 2;
-      this.activeRecipe = {
-        name: '',
-        description: '',
-        image: '',
-        requiredTime: '',
-        difficulty: '',
-        servings: '',
-        steps: '',
-        ingredients: [],
-      };
     },
     fetchRecipes() {
       axios.get('https://recipes-api-go.herokuapp.com/api/recipes')
