@@ -3,11 +3,12 @@
     <Header v-bind:activeTab="activeTab"
             v-on:activateRecipes="viewRecipes"
             v-on:activateCreateRecipe="createRecipe"/>
-    <Recipes v-show="showList"
+    <div v-if="loading" class="lds-dual-ring"></div>
+    <Recipes v-show="showList && !loading"
             v-bind:recipes="recipes"
             v-on:deleteRecipe="deleteRecipe"
             v-on:editRecipe="editRecipe" />
-    <RecipeForm v-show="!showList"
+    <RecipeForm v-show="!showList && !loading"
                 v-bind:recipe="activeRecipe"
                 v-bind:editMode="editMode"
                 v-on:cancel="viewRecipes"
@@ -48,6 +49,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       activeTab: 1,
       showList: true,
       activeRecipe: emptyRecipe,
@@ -62,6 +64,7 @@ export default {
 
   methods: {
     viewRecipes() {
+      this.fetchRecipes();
       this.showList = true;
       this.activeTab = 1;
     },
@@ -78,9 +81,16 @@ export default {
       this.activeRecipe = recipe;
     },
     fetchRecipes() {
+      this.loading = true;
       axios.get('https://recipes-api-go.herokuapp.com/api/recipes')
-        .then((response) => { this.recipes = response.data; })
-        .catch(error => console.log(error));
+        .then((response) => {
+          this.recipes = response.data;
+          this.loading = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loading = false;
+        });
     },
     saveRecipe(recipe) {
       if (recipe.ID) {
@@ -139,3 +149,34 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.lds-dual-ring {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  width: 64px;
+  height: 64px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #cef;
+  border-color: #cef transparent #cef transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
+
