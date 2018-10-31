@@ -34,10 +34,12 @@
       <nav class="tabs is-boxed is-fullwidth">
         <div class="container">
           <ul>
-            <li class="is-active">
+            <li v-bind:class="{ 'is-active': activeTab==1 }"
+                v-on:click="$emit('activateRecipes')">
               <a>View Recipes</a>
             </li>
-            <li>
+            <li v-bind:class="{ 'is-active': activeTab==2 }"
+                v-on:click="$emit('activateCreateRecipe')">
               <a>Create Recipe</a>
             </li>
           </ul>
@@ -46,3 +48,11 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  name: 'Header',
+  props: ['activeTab'],
+};
+</script>
+
