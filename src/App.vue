@@ -52,7 +52,7 @@ export default {
       loading: true,
       activeTab: 1,
       showList: true,
-      activeRecipe: emptyRecipe,
+      activeRecipe: this.getEmptyRecipe(),
       recipes: [],
       editMode: false,
     };
@@ -63,6 +63,15 @@ export default {
   },
 
   methods: {
+    getEmptyRecipe() {
+      const newEmptyRecipe = {};
+      const keys = Object.keys(emptyRecipe);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        newEmptyRecipe[key] = emptyRecipe[key];
+      }
+      return newEmptyRecipe;
+    },
     viewRecipes() {
       this.fetchRecipes();
       this.showList = true;
@@ -72,7 +81,7 @@ export default {
       this.showList = false;
       this.editMode = false;
       this.activeTab = 2;
-      this.activeRecipe = emptyRecipe;
+      this.activeRecipe = this.getEmptyRecipe();
     },
     editRecipe(recipe) {
       this.showList = false;
