@@ -3,6 +3,12 @@
     <Header v-bind:activeTab="activeTab"
             v-on:activateRecipes="viewRecipes"
             v-on:activateCreateRecipe="createRecipe"/>
+    <div v-show="showList" class="field">
+      <div class="control">
+        <input v-model="searchName" class="input is-medium" type="text"
+              placeholder="Search for a recipe">
+      </div>
+    </div>
     <div v-if="loading" class="lds-dual-ring"></div>
     <Recipes v-show="showList && !loading"
             v-bind:recipes="recipes"
@@ -55,11 +61,18 @@ export default {
       activeRecipe: emptyRecipe,
       recipes: [],
       editMode: false,
+      searchName: '',
     };
   },
 
   mounted() {
     this.fetchRecipes();
+  },
+
+  watch: {
+    searchName() {
+      this.fetchRecipes();
+    },
   },
 
   methods: {
@@ -82,7 +95,11 @@ export default {
     },
     fetchRecipes() {
       this.loading = true;
-      axios.get('https://recipes-api-go.herokuapp.com/api/recipes')
+      let url = 'https://recipes-api-go.herokuapp.com/api/recipes';
+      if (this.searchName) {
+        url = `${url}/name?name=${this.searchName}`;
+      }
+      axios.get(url)
         .then((response) => {
           this.recipes = response.data;
           this.loading = false;
@@ -151,6 +168,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+input {
+  width: 94%;
+  margin-top: 2%;
+  margin-left: 3%;
+}
+
 .lds-dual-ring {
   display: block;
   margin-left: auto;

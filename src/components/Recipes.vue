@@ -47,7 +47,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .columns {
-  padding: 4%;
+  padding-left: 4%;
 }
 
 .no-recipes {
